@@ -43,9 +43,24 @@ const findOneById = async (id) => {
     }
 };
 
+// Query tổng hợp (aggregate) để lấy toàn bộ Coumns và Cards thuộc về Board
+const getDetails = async (id) => {
+    try {
+        const result = await GET_DB()
+            .collection(BOARD_COLLECTION_NAME)
+            .findOne({
+                _id: new ObjectId(id),
+            });
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const boardModel = {
     BOARD_COLLECTION_NAME,
     BOARD_COLLECTION_SCHEMA,
     createNew,
     findOneById,
+    getDetails,
 };
