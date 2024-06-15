@@ -11,10 +11,8 @@ const createNew = async (reqBody) => {
         };
 
         const createdBoard = await boardModel.createNew(newBoard);
-        console.log(createdBoard);
 
         const getNewBoard = await boardModel.findOneById(createdBoard.insertedId);
-        console.log(getNewBoard);
 
         // Trả kết quả về, trong Service luôn phải có return
         return getNewBoard;
