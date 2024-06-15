@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-catch */
-import ApiError from '~/utils/ApiError';
+import { boardModel } from '~/models/boardModel';
 import { slugify } from '~/utils/formatters';
 
 const createNew = async (reqBody) => {
@@ -10,8 +10,14 @@ const createNew = async (reqBody) => {
             slug: slugify(reqBody.title),
         };
 
+        const createdBoard = await boardModel.createNew(newBoard);
+        console.log(createdBoard);
+
+        const getNewBoard = await boardModel.findOneById(createdBoard.insertedId);
+        console.log(getNewBoard);
+
         // Trả kết quả về, trong Service luôn phải có return
-        return newBoard;
+        return getNewBoard;
     } catch (error) {
         throw error;
     }
