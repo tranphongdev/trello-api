@@ -3,3 +3,8 @@ export const WHITELIST_DOMAINS = [
     'http://localhost:5173',
     // Sau này deloy lên domain chính thức ....
 ];
+
+export const BOARD_TYPES = {
+    PUBLIC: 'public',
+    PRIVATE: 'private',
+};
