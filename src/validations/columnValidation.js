@@ -39,8 +39,23 @@ const update = async (req, res, next) => {
     }
 };
 
+const deleteItem = async (req, res, next) => {
+    const correctCondition = Joi.object({
+        id: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    });
+
+    try {
+        await correctCondition.validateAsync(req.params);
+        next();
+    } catch (error) {
+        const errorMessage = new Error(error).message;
+        const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage);
+        next(customError);
+    }
+};
+
 export const columnValidation = {
-    // Định nghĩa function nhưng không thực thi
     createNew,
     update,
+    deleteItem,
 };
