@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { ObjectId } from 'mongodb';
+import { ObjectId, ReturnDocument } from 'mongodb';
 
 import { columnModel } from './columnModel';
 import { cardModel } from './cardModel';
@@ -90,10 +90,29 @@ const getDetails = async (id) => {
     }
 };
 
+// Push 1 cái giá trị columnId vào cuối mảng columnOrderIds
+const pushColumnOrderIds = async (column) => {
+    try {
+        const result = await GET_DB()
+            .collection(BOARD_COLLECTION_NAME)
+            .findOneAndUpdate(
+                {
+                    _id: new ObjectId(column.boardId),
+                },
+                { $push: { columnOrderIds: new ObjectId(column._id) } },
+                { returnDocument: 'after' },
+            );
+        return result.value;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const boardModel = {
     BOARD_COLLECTION_NAME,
     BOARD_COLLECTION_SCHEMA,
     createNew,
     findOneById,
     getDetails,
+    pushColumnOrderIds,
 };
