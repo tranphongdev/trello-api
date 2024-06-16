@@ -10,7 +10,18 @@ const createNew = async (req, res, next) => {
     }
 };
 
+const update = async (req, res, next) => {
+    try {
+        const columnId = req.params.id;
+        const updatedColumn = await columnService.update(columnId, req.body);
+
+        res.status(StatusCodes.OK).json(updatedColumn);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const columnController = {
-    // Định nghĩa function nhưng không thực thi
     createNew,
+    update,
 };
