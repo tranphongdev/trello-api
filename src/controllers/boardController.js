@@ -22,8 +22,20 @@ const getDetails = async (req, res, next) => {
     }
 };
 
+const update = async (req, res, next) => {
+    try {
+        const boardId = req.params.id;
+        const updatedBoard = await boardService.update(boardId, req.body);
+
+        res.status(StatusCodes.OK).json(updatedBoard);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const boardController = {
     // Định nghĩa function nhưng không thực thi
     createNew,
     getDetails,
+    update,
 };

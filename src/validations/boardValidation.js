@@ -29,7 +29,28 @@ const createNew = async (req, res, next) => {
     }
 };
 
+const update = async (req, res, next) => {
+    const correctCondition = Joi.object({
+        // message : custom message
+        title: Joi.string().min(3).max(50).trim().strict(),
+        description: Joi.string().min(3).max(256).trim().strict(),
+        type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE),
+    });
+
+    try {
+        // set abortEarly: false  để trường hợp có nhiều lỗi validation thì trả về tất cả
+        await correctCondition.validateAsync(req.body, { abortEarly: false, allowUnknown: true });
+        // Validate dữ liệu xoq chuyển hướng qua Controller
+        next();
+    } catch (error) {
+        const errorMessage = new Error(error).message;
+        const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage);
+        next(customError);
+    }
+};
+
 export const boardValidation = {
     // Định nghĩa function nhưng không thực thi
     createNew,
+    update,
 };
