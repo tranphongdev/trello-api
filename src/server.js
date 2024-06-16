@@ -21,9 +21,15 @@ const START_SERVER = () => {
     // Middlewara xử lý lỗi tập trung
     app.use(errorHandlingMiddleware);
 
-    app.listen(env.APP_PORT, env.APP_HOST, () => {
-        console.log(`3. Hello ${env.AUTHOR}, I am running at http://${env.APP_HOST}:${env.APP_PORT}/`);
-    });
+    if (env.BUILD_MODE === 'production') {
+        app.listen(process.env.PORT, () => {
+            console.log(`3. Production: Hello ${env.AUTHOR}, I am running at port: ${process.env.PORT}/`);
+        });
+    } else {
+        app.listen(env.APP_PORT, env.APP_HOST, () => {
+            console.log(`3. Hello ${env.AUTHOR}, I am running at http://${env.APP_HOST}:${env.APP_PORT}/`);
+        });
+    }
 
     exitHook(() => CLOSE_DB());
 };
